@@ -77,6 +77,11 @@ class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: string;
 
+  // comparePassword는 나중에 resolver에서 필요할 때 마다 사용 할것
+  public comparePassword(password: string) {
+    return bcrypt.compare(password, this.password);
+  }
+
   @BeforeInsert()
   @BeforeUpdate()
   async savePassword() {
