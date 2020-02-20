@@ -4,10 +4,16 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate
 } from "typeorm";
 
+import bcrypt from "bcrypt";
+
 import { IsEmail } from "class-validator";
+
+const BCRYPT_ROUNDS = 10;
 
 @Entity()
 class User extends BaseEntity {
@@ -70,6 +76,19 @@ class User extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: string;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async savePassword() {
+    if (this.password) {
+      const hashedPassword = await this.hashPassword(this.password);
+      this.password = hashedPassword;
+    }
+  }
+
+  private hashPassword(password: string) {
+    return bcrypt.hash(password, BCRYPT_ROUNDS);
+  }
 }
 
 export default User;
