@@ -18,7 +18,7 @@ const resolvers: IResolvers = {
           return {
             ok: true,
             error: null,
-            token: "추후 처리"
+            token: "추후 처리, 이미존재아이디"
           };
         }
       } catch (error) {
@@ -36,7 +36,7 @@ const resolvers: IResolvers = {
         return {
           ok: true,
           error: null,
-          token: "추후 처리"
+          token: "추후 처리, 유저 생성"
         };
       } catch (error) {
         return {
