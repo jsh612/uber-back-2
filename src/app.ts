@@ -1,3 +1,5 @@
+import { IGetUserAuthInfoRequest } from "./custom.d";
+import { Response, NextFunction } from "express";
 import cors from "cors";
 import { GraphQLServer } from "graphql-yoga";
 import helmet from "helmet";
@@ -8,7 +10,11 @@ import decodedJWT from "./utils/decodeJWT";
 class App {
   public app: GraphQLServer;
   constructor() {
-    this.app = new GraphQLServer({ schema });
+    this.app = new GraphQLServer({
+      schema,
+      // context --> app이 resolver에게 정보를 전달 할때 사용(이 정보는 모든 resolver에서 사용가능)
+      context: ({ request }) => ({ request })
+    });
     this.middlewares();
   }
 
@@ -19,13 +25,22 @@ class App {
     this.app.express.use(this.jwt);
   };
 
-  private jwt = async (req, res, next): Promise<void> => {
+  private jwt = async (
+    req: IGetUserAuthInfoRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     // X-JWT
     // 이름은 상관없음, 프론트엔드에서 req 헤더에 전달할 이름과 같기만 하면된다.
     const token = req.get("X-JWT");
     if (token) {
       const user = await decodedJWT(token);
-      console.log("app.ts의 유저", user);
+      if (user) {
+        // user를 req에 붙이기
+        req.user = user;
+      } else {
+        req.user = undefined;
+      }
     }
     next();
   };
