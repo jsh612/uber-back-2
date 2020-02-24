@@ -1,4 +1,4 @@
-import { IGetUserAuthInfoRequest } from "./custom.d";
+import { IGetUserAuthInfoRequest } from "./types/custom.d";
 import { Response, NextFunction } from "express";
 import cors from "cors";
 import { GraphQLServer } from "graphql-yoga";
