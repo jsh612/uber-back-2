@@ -5,6 +5,7 @@ import {
 import { IResolvers } from "graphql-tools";
 import User from "../../../entities/User";
 import Verification from "../../../entities/Verification";
+import createJWT from "../../../utils/createJWT";
 
 const resolvers: IResolvers = {
   Mutation: {
@@ -44,10 +45,11 @@ const resolvers: IResolvers = {
         if (user) {
           user.verifiedPhoneNumber = true;
           user.save();
+          const token: string = createJWT(user.id);
           return {
             ok: true,
             error: null,
-            token: "곧 만들어짐"
+            token
           };
         } else {
           return {

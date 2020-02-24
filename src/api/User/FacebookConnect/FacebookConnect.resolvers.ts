@@ -4,6 +4,7 @@ import {
 } from "./../../../types/graph.d";
 import { IResolvers } from "graphql-tools";
 import User from "../../../entities/User";
+import createJWT from "../../../utils/createJWT";
 
 const resolvers: IResolvers = {
   Mutation: {
@@ -15,10 +16,11 @@ const resolvers: IResolvers = {
       try {
         const existingUser = await User.findOne({ fbId });
         if (existingUser) {
+          const token: string = createJWT(existingUser.id);
           return {
             ok: true,
             error: null,
-            token: "추후 처리, 이미존재아이디"
+            token
           };
         }
       } catch (error) {
@@ -29,14 +31,15 @@ const resolvers: IResolvers = {
         };
       }
       try {
-        await User.create({
+        const newUser = await User.create({
           ...args,
           profilePhoto: `http://graph.facebook.com/${fbId}/picture?type=square`
         }).save();
+        const token = createJWT(newUser.id);
         return {
           ok: true,
           error: null,
-          token: "추후 처리, 유저 생성"
+          token
         };
       } catch (error) {
         return {

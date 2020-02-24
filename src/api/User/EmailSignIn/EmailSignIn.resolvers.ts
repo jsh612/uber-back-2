@@ -4,6 +4,7 @@ import {
 } from "./../../../types/graph.d";
 import { IResolvers } from "graphql-tools";
 import User from "../../../entities/User";
+import createJWT from "../../../utils/createJWT";
 
 const resolvers: IResolvers = {
   Mutation: {
@@ -23,10 +24,11 @@ const resolvers: IResolvers = {
         }
         const checkPassword = await user.comparePassword(password);
         if (checkPassword) {
+          const token: string = createJWT(user.id);
           return {
             ok: true,
             error: null,
-            token: "곧 작성"
+            token
           };
         } else {
           return {
