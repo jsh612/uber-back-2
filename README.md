@@ -11,8 +11,9 @@
 - [x] Sign Up with Email
 
 ### Authentication:
+
 - [x] Generate JWT
-- [ ] Verifiy JWT
+- [x] Verifiy JWT
 
 ### Private Resolvers:
 
@@ -31,8 +32,8 @@
 - [ ] Subscribe to Chat Room Messages
 - [ ] Send a Chat Message
 
-
 ---
+
 ## Code Challenge
 
 - [ ] Get Ride History
