@@ -1,18 +1,16 @@
 // import { sendVerificationEmail } from "./../../../utils/sendEmail";
-import {
-  RequestEmailVerificationResponse,
-  User
-} from "./../../../types/graph.d";
+import { RequestEmailVerificationResponse } from "./../../../types/graph.d";
 import { IResolvers } from "graphql-tools";
 import privateResolver from "../../../utils/privateResolver";
 import Verification from "../../../entities/Verification";
+import User from "../../../entities/User";
 
 const resolvers: IResolvers = {
   Mutation: {
     RequestEmailVerification: privateResolver(
       async (_, __, { request }): Promise<RequestEmailVerificationResponse> => {
-        const user: User = request.user;
-        if (user.email) {
+        const user: User = request.user; // User 는 entities의 User
+        if (user.email && !user.verifiedEmail) {
           try {
             const oldVerification = await Verification.findOne({
               payload: user.email
