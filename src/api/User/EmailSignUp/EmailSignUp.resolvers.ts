@@ -1,3 +1,4 @@
+// import { sendVerificationEmail } from "./../../../utils/sendEmail";
 import {
   EmailSignUpMutationArgs,
   EmailSignUpResponse
@@ -5,6 +6,7 @@ import {
 import { IResolvers } from "graphql-tools";
 import User from "../../../entities/User";
 import createJWT from "../../../utils/createJWT";
+import Verification from "../../../entities/Verification";
 
 const resolvers: IResolvers = {
   Mutation: {
@@ -12,7 +14,7 @@ const resolvers: IResolvers = {
       _,
       args: EmailSignUpMutationArgs
     ): Promise<EmailSignUpResponse> => {
-      const { email } = args;
+      const { email, phoneNumber } = args;
       try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -22,13 +24,37 @@ const resolvers: IResolvers = {
             token: null
           };
         } else {
-          const newUser = await User.create({ ...args }).save();
-          const token = createJWT(newUser.id);
-          return {
-            ok: true,
-            error: null,
-            token
-          };
+          const phoneVerification = await Verification.findOne({
+            payload: phoneNumber,
+            verified: true
+          });
+          if (phoneVerification) {
+            const newUser = await User.create({ ...args }).save();
+            if (newUser.email) {
+              const emailVerification = await Verification.create({
+                payload: newUser.email,
+                target: "EMAIL"
+              });
+              console.log("이메일 인증, 메일가입 리졸버", emailVerification);
+              // // email 인증
+              // await sendVerificationEmail(
+              //   newUser.fullName,
+              //   emailVerification.key
+              // );
+            }
+            const token = createJWT(newUser.id);
+            return {
+              ok: true,
+              error: null,
+              token
+            };
+          } else {
+            return {
+              ok: false,
+              error: "You haven't verified your phone number",
+              token: null
+            };
+          }
         }
       } catch (error) {
         return {
