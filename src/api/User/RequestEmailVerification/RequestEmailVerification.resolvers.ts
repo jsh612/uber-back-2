@@ -40,7 +40,7 @@ const resolvers: IResolvers = {
         } else {
           return {
             ok: false,
-            error: "인증되 이메일이 없습니다."
+            error: "인증이 필요한 이메일이 없습니다."
           };
         }
       }
