@@ -34,7 +34,7 @@ const resolvers: IResolvers = {
               const emailVerification = await Verification.create({
                 payload: newUser.email,
                 target: "EMAIL"
-              });
+              }).save();
               console.log("이메일 인증, 메일가입 리졸버", emailVerification);
               // // email 인증
               // await sendVerificationEmail(
