@@ -26,7 +26,7 @@ const resolvers: IResolvers = {
           delete notNull.password;
         }
         try {
-          await User.update({ id: user.id }, { ...notNull });
+          await User.update({ id: user.id }, { ...notNull }); // update는 .save() 불필요
           return {
             ok: true,
             error: null
