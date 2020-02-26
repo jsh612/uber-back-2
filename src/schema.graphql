@@ -54,7 +54,14 @@ type GetMyPlacesResponse {
 
 type Query {
   GetMyPlaces: GetMyPlacesResponse!
+  GetNearbyDrivers: GetNearbyDriversResponse
   GetMyProfile: GetMyProfileResponse!
+}
+
+type GetNearbyDriversResponse {
+  ok: Boolean!
+  error: String
+  drivers: [User]
 }
 
 type Place {
