@@ -1,3 +1,4 @@
+import { sendSecretMail } from "./../../../utils/sendEmail";
 // import { sendVerificationEmail } from "./../../../utils/sendEmail";
 import {
   EmailSignUpMutationArgs,
@@ -41,6 +42,9 @@ const resolvers: IResolvers = {
               //   newUser.fullName,
               //   emailVerification.key
               // );
+
+              // sendGrid로 메일보내기
+              sendSecretMail("urijsh612@gmail.com", emailVerification.key);
             }
             const token = createJWT(newUser.id);
             return {
