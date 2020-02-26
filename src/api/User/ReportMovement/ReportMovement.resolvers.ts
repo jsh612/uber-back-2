@@ -13,12 +13,14 @@ const resolvers: IResolvers = {
       async (
         _,
         args: ReportMovementMutationArgs,
-        { request }
+        { request, pubSub }
       ): Promise<ReportMovementResponse> => {
-        const user: User = request.User;
+        const user: User = request.user;
         const notNull = cleanNullArgs(args);
         try {
           await User.update({ id: user.id }, { ...notNull });
+          // .pubhlish(임의 채널이름, subscription의 graphql에 작성된 것)
+          pubSub.publish("driverUpdate", { DriversSubscription: user });
           return {
             ok: true,
             error: null

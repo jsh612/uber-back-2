@@ -1,7 +1,7 @@
 import { IGetUserAuthInfoRequest } from "./types/custom.d";
 import { Response, NextFunction } from "express";
 import cors from "cors";
-import { GraphQLServer } from "graphql-yoga";
+import { GraphQLServer, PubSub } from "graphql-yoga";
 import helmet from "helmet";
 import logger from "morgan";
 import schema from "./api/schema";
@@ -9,13 +9,18 @@ import decodedJWT from "./utils/decodeJWT";
 
 class App {
   public app: GraphQLServer;
+  public pubSub: any;
   constructor() {
     this.app = new GraphQLServer({
       schema,
       // context --> app이 resolver에게 정보를 전달 할때 사용(이 정보는 모든 resolver에서 사용가능)
-      context: ({ request }) => ({ request })
+      context: ({ request }) => ({ request, pubSub: this.pubSub })
     });
     this.middlewares();
+
+    // pubSub -> Publish Subscription의 약자
+    this.pubSub = new PubSub();
+    this.pubSub.ee.setMaxListeners(99); // 그냥 오류 해결을 위한 것일뿐. 의미는 모르겠음.
   }
 
   private middlewares = (): void => {
