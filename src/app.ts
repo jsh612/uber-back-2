@@ -14,7 +14,11 @@ class App {
     this.app = new GraphQLServer({
       schema,
       // context --> app이 resolver에게 정보를 전달 할때 사용(이 정보는 모든 resolver에서 사용가능)
-      context: ({ request }) => ({ request, pubSub: this.pubSub })
+      context: ({ request, connection }) => {
+        // const context = connection ? connection.context : null;
+        const { context = {} } = connection ? connection : {};
+        return { request, pubSub: this.pubSub, context };
+      }
     });
     this.middlewares();
 
