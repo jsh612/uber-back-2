@@ -19,4 +19,6 @@ export interface INotNull {
   password?: string;
   profilePhoto?: string;
   age?: number;
+  name?: string;
+  isFav?: boolean;
 }

@@ -28,6 +28,10 @@ class Place extends BaseEntity {
   @Column({ type: "boolean", default: false })
   isFav: boolean;
 
+  // realation 로드없이 relation의 id만 가져오는 방법
+  @Column({ nullable: true })
+  userId: number;
+
   @ManyToOne(
     type => User,
     user => user.places
