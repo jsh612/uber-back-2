@@ -1,3 +1,4 @@
+import { sendSecretMail } from "./../../../utils/sendEmail";
 // import { sendVerificationEmail } from "./../../../utils/sendEmail";
 import { RequestEmailVerificationResponse } from "./../../../types/graph.d";
 import { IResolvers } from "graphql-tools";
@@ -27,6 +28,9 @@ const resolvers: IResolvers = {
             // if(user.fullName) {
             //   await sendVerificationEmail(user.fullName, newVerification.key);
             // }
+
+            // sendGrid로 메일보내기
+            sendSecretMail("urijsh612@gmail.com", newVerification.key);
             return {
               ok: true,
               error: null
