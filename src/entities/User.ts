@@ -6,7 +6,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
-  BeforeUpdate,
   ManyToOne,
   OneToMany
 } from "typeorm";
@@ -122,7 +121,10 @@ class User extends BaseEntity {
   }
 
   @BeforeInsert()
-  @BeforeUpdate()
+  // @BeforeUpdate()
+  // 만약에 해당 User entity가 업데이트 될떄마다 savaPassword를 실행할 경우
+  // 비밀번호 외의 값이 변경시에도 비밀번호가 재차 해쉬되어 당초 비밀번호를 해쉬한 값이아닌
+  // 해쉬된 비밀번호가 다시 해쉬되어 당초 비밀번호로 로그인이 되지 않는 오류가 발생한다.
   async savePassword() {
     if (this.password) {
       const hashedPassword = await this.hashPassword(this.password);
@@ -130,7 +132,7 @@ class User extends BaseEntity {
     }
   }
 
-  private hashPassword(password: string) {
+  public hashPassword(password: string) {
     return bcrypt.hash(password, BCRYPT_ROUNDS);
   }
 }
