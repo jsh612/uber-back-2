@@ -13,7 +13,7 @@ const resolvers: IResolvers = {
       async (
         _,
         args: RequestRideMutationArgs,
-        { request }
+        { request, pubSub }
       ): Promise<RequestRideResponse> => {
         const user: User = request;
         try {
@@ -21,6 +21,7 @@ const resolvers: IResolvers = {
             ...args,
             passenger: user
           }).save();
+          pubSub.publish("rideRequest", { NearbyRideSubscription: ride });
           return {
             ok: true,
             error: null,
