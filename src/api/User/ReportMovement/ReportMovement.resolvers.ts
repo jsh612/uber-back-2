@@ -19,8 +19,9 @@ const resolvers: IResolvers = {
         const notNull = cleanNullArgs(args);
         try {
           await User.update({ id: user.id }, { ...notNull });
+          const updatedUser = await User.findOne({ id: user.id });
           // .pubhlish(임의 채널이름, subscription의 graphql에 작성된 것)
-          pubSub.publish("driverUpdate", { DriversSubscription: user });
+          pubSub.publish("driverUpdate", { DriversSubscription: updatedUser });
           return {
             ok: true,
             error: null
