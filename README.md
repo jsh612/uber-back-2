@@ -37,8 +37,8 @@
 - [x] Subscribe to Ride Status
 - [x] Create a Chat Room
 - [x] Get Chat Room Messages
+- [x] Send a Chat Message
 - [ ] Subscribe to Chat Room Messages
-- [ ] Send a Chat Message
 
 ---
 
