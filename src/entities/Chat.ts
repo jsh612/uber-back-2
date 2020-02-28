@@ -19,7 +19,8 @@ class Chat extends BaseEntity {
 
   @OneToMany(
     type => Message,
-    message => message.chat
+    message => message.chat,
+    { nullable: true }
   )
   messages: Message[];
 

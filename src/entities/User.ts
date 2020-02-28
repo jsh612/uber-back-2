@@ -6,7 +6,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
-  ManyToOne,
   OneToMany
 } from "typeorm";
 import bcrypt from "bcrypt";
