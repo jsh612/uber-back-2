@@ -14,7 +14,7 @@ const resolvers: IResolvers = {
       async (
         _,
         args: SendChatMessageMutationArgs,
-        { request }
+        { request, pubSub }
       ): Promise<SendChatMessageResponse> => {
         const user: User = request.user;
         try {
@@ -26,6 +26,9 @@ const resolvers: IResolvers = {
                 chat,
                 user
               }).save();
+              pubSub.publish("newChatMessage", {
+                MessageSubscription: message
+              });
               return {
                 ok: true,
                 error: null,
