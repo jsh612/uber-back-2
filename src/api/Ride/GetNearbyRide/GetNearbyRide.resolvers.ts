@@ -9,7 +9,8 @@ const resolvers: IResolvers = {
   Query: {
     GetNearbyRide: privateResolver(
       async (_, __, { request }): Promise<GetNearbyRideResponse> => {
-        const user: User = request.user;
+        // 운전자가 승객 찾기
+        const user: User = request.user; // 여기서 user는 운전자
         if (user.isDriving) {
           const { lastLat, lastLng } = user;
           try {

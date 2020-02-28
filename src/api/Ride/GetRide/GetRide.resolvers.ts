@@ -14,9 +14,12 @@ const resolvers: IResolvers = {
       ): Promise<GetRideResponse> => {
         const user: User = request.user; // 유저는 운전자 또는 승객 둘다.
         try {
-          const ride = await Ride.findOne({
-            id: args.rideId
-          });
+          const ride = await Ride.findOne(
+            {
+              id: args.rideId
+            },
+            { relations: ["driver", "passenger"] }
+          );
           if (ride) {
             if (ride.passengerId === user.id || ride.driverId === user.id) {
               return {
