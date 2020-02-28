@@ -1,7 +1,7 @@
 import {
   UpdateRideStatusMutationArgs,
   UpdateRideStatusResponse
-} from "./../../../types/graph.d";
+} from "../../../types/graph";
 import { IResolvers } from "graphql-tools";
 import privateResolver from "../../../utils/privateResolver";
 import User from "../../../entities/User";
@@ -13,9 +13,9 @@ const resolvers: IResolvers = {
       async (
         _,
         args: UpdateRideStatusMutationArgs,
-        { req }
+        { request, pubSub }
       ): Promise<UpdateRideStatusResponse> => {
-        const user: User = req.user; // 여기서 유저는 운전자
+        const user: User = request.user; // 여기서 유저는 운전자
         if (user.isDriving) {
           try {
             let ride: Ride | undefined;
@@ -41,6 +41,10 @@ const resolvers: IResolvers = {
             if (ride) {
               ride.status = args.status;
               ride.save();
+
+              // 구독자에게 변화 전송
+              // .publish(채널이름, .graphql에 작성된 내용 ← 보내고자하는 데이터)
+              pubSub.publish("rideUpdate", { RideStatusSubscription: ride });
               return {
                 ok: true,
                 error: null
