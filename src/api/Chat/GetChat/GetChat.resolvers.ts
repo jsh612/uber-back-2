@@ -18,7 +18,7 @@ const resolvers: IResolvers = {
             {
               id: args.chatId
             },
-            { relations: ["messages"] }
+            { relations: ["messages", "driver", "passenger"] }
           );
           if (chat) {
             if (chat.passengerId === user.id || chat.driverId === user.id) {
