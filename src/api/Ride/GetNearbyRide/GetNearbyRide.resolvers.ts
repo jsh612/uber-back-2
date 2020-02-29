@@ -19,6 +19,11 @@ const resolvers: IResolvers = {
               pickUpLat: Between(lastLat - 0.05, lastLat + 0.05),
               pickUpLng: Between(lastLng - 0.05, lastLng + 0.05)
             });
+            // const ride = await Ride.findOne({
+            //   status: "REQUESTING",
+            //   pickUpLat: Between(lastLat - 0.05, lastLat + 0.05),
+            //   pickUpLng: Between(lastLng - 0.05, lastLng + 0.05)
+            // });
             if (ride) {
               return {
                 ok: true,
