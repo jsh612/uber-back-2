@@ -5,7 +5,7 @@ const cleanNullArgs = args => {
   // 그 이유는 User에 값들 중 null일 수 없는 것이 있기 때문이다.
   const notNull: INotNull = {};
   Object.keys(args).forEach(key => {
-    if (args[key] !== null) {
+    if (args[key] !== null || args[key] !== undefined) {
       notNull[key] = args[key];
     }
   });
