@@ -6,7 +6,7 @@ const resolvers: IResolvers = {
   Subscription: {
     NearbyRideSubscription: {
       subscribe: withFilter(
-        (_, __, { pubSub }) => pubSub.asyncIterator("rideRequest"),
+        (_, __, { pubSub }) => pubSub.asyncIterator("rideRequest"), // RequestRide 에서 보내온 데이터 수신
         (payload, _, { context }) => {
           // 여기서 user 는 운전자
           const user: User = context.currentUser;

@@ -19,9 +19,10 @@ const resolvers: IResolvers = {
         if (!user.isRiding && !user.isDriving) {
           try {
             const ride = await Ride.create({ ...args, passenger: user }).save();
-            pubSub.publish("rideRequest", { NearbyRideSubscription: ride });
+            pubSub.publish("rideRequest", { NearbyRideSubscription: ride }); // NearbyRideSubscription으로 데이터 전송
             user.isRiding = true;
             user.save();
+            console.log("ok ride:", ride);
             return {
               ok: true,
               error: null,
