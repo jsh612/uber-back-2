@@ -7,8 +7,8 @@ import { Between, getRepository } from "typeorm";
 const resolvers: IResolvers = {
   Query: {
     GetNearbyDrivers: privateResolver(
-      async (_, __, { req }): Promise<GetNearbyDriversResponse> => {
-        const user: User = req.user;
+      async (_, __, { request }): Promise<GetNearbyDriversResponse> => {
+        const user: User = request.user;
         const { lastLat, lastLng } = user;
         try {
           // Between 등 find 옵션은 Active record에서는 사용 불가
