@@ -2,7 +2,7 @@ import { GetNearbyRideResponse } from "../../../types/graph";
 import { IResolvers } from "graphql-tools";
 import privateResolver from "../../../utils/privateResolver";
 import User from "../../../entities/User";
-import { getRepository, Between } from "typeorm";
+import { Between } from "typeorm";
 import Ride from "../../../entities/Ride";
 
 const resolvers: IResolvers = {
@@ -14,7 +14,16 @@ const resolvers: IResolvers = {
         if (user.isDriving) {
           const { lastLat, lastLng } = user;
           try {
-            const ride = await getRepository(Ride).findOne(
+            // const ride = await getRepository(Ride).findOne(
+            //   {
+            //     status: "REQUESTING",
+            //     pickUpLat: Between(lastLat - 0.05, lastLat + 0.05),
+            //     pickUpLng: Between(lastLng - 0.05, lastLng + 0.05)
+            //   },
+            //   { relations: ["passenger"] }
+            // );
+            // 위와 동일 (굳이 getRepository 사용할 필요는 없음)
+            const ride = await Ride.findOne(
               {
                 status: "REQUESTING",
                 pickUpLat: Between(lastLat - 0.05, lastLat + 0.05),
@@ -22,11 +31,6 @@ const resolvers: IResolvers = {
               },
               { relations: ["passenger"] }
             );
-            // const ride = await Ride.findOne({
-            //   status: "REQUESTING",
-            //   pickUpLat: Between(lastLat - 0.05, lastLat + 0.05),
-            //   pickUpLng: Between(lastLng - 0.05, lastLng + 0.05)
-            // });
             if (ride) {
               return {
                 ok: true,
