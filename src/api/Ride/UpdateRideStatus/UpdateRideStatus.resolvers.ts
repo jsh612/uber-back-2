@@ -43,18 +43,35 @@ const resolvers: IResolvers = {
                 ride.save();
               }
             } else {
-              ride = await Ride.findOne({
-                id: args.rideId,
-                driver: user
-              });
+              console.log("ride Id", args.rideId);
+              ride = await Ride.findOne(
+                {
+                  id: args.rideId,
+                  driver: user
+                },
+                {
+                  relations: ["passenger", "driver"]
+                }
+              );
             }
             if (ride) {
               ride.status = args.status;
+              console.log("상태", ride.status);
+              if (ride.status === "FINISHED") {
+                const passenger = await User.findOne(ride.passenger.id);
+                if (passenger) {
+                  passenger.isRiding = false;
+                  passenger.save();
+                }
+                user.isTaken = false;
+                user.save();
+              }
               ride.save();
 
               // 구독자에게 변화 전송
               // .publish(채널이름, .graphql에 작성된 내용 ← 보내고자하는 데이터)
               pubSub.publish("rideUpdate", { RideStatusSubscription: ride });
+              console.log("업데이트 상태");
               return {
                 ok: true,
                 error: null,

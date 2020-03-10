@@ -22,7 +22,6 @@ const resolvers: IResolvers = {
             pubSub.publish("rideRequest", { NearbyRideSubscription: ride }); // NearbyRideSubscription으로 데이터 전송
             user.isRiding = true;
             user.save();
-            console.log("ok ride:", ride);
             return {
               ok: true,
               error: null,
