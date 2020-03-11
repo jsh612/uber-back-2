@@ -22,15 +22,15 @@ const resolvers: IResolvers = {
           );
           if (ride) {
             if (ride.passengerId === user.id || ride.driverId === user.id) {
-              if (!ride.driverId) {
-                // driver가 아직 운행여부를 수행하지 않았을 경우 드라이버에 대한 정보가
-                // Frontend로 전달되지 않아 오류가 발생하므로, 다음과 같이 임시값 설정
-                ride.driver.id = 0;
-                ride.driver.lastName = "대기중";
-                ride.driver.firstName = "";
-                ride.driver.profilePhoto = "";
-                ride.save();
-              }
+              // if (!ride.driverId) {
+              //   // driver가 아직 운행여부를 수행하지 않았을 경우 드라이버에 대한 정보가
+              //   // Frontend로 전달되지 않아 오류가 발생하므로, 다음과 같이 임시값 설정
+              //   ride.driver.id = 0;
+              //   ride.driver.lastName = "대기중";
+              //   ride.driver.firstName = "";
+              //   ride.driver.profilePhoto = "";
+              //   ride.save();
+              // }
               return {
                 ok: true,
                 error: null,
