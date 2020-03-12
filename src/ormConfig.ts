@@ -4,7 +4,7 @@ import { ConnectionOptions } from "typeorm";
 
 const connectionOptions: ConnectionOptions = {
   type: "postgres",
-  database: "nuber",
+  database: process.env.DB_NAME, // nuber
   synchronize: true, // DB와 동기화 할건지 여부 --> true: 서버 다시 실행될 때마다 data 다시 입력되는 느낌
   // logging: true,
   entities: ["entities/**/*.*"],
