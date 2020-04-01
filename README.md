@@ -1,4 +1,6 @@
-# 우버 백엔드 #1.15 부터는 여기서
+# 우버 클론 백앤드
+## 주요 스택 
+* Graphql, Typescript, Nodejs, TypeORM, postgres
 
 ## Resolvers
 
@@ -40,9 +42,3 @@
 - [x] Send a Chat Message
 - [x] Subscribe to Chat Room Messages
 
----
-
-## Code Challenge
-
-- [ ] Get Ride History
-- [ ] See Ride Detail
